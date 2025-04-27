@@ -1,142 +1,151 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¿Vas a venir hoy?</title>
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(45deg, #1a1a1a, #2a2a2a);
-            font-family: 'Arial', sans-serif;
-            overflow: hidden;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¿Vas a venir hoy?</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(45deg, #1a1a1a, #2a2a2a);
+      font-family: 'Arial', sans-serif;
+      overflow: hidden;
+    }
 
-        .title {
-            color: #fff;
-            font-size: 3em;
-            margin-bottom: 50px;
-            text-shadow: 0 0 10px rgba(255,255,255,0.5);
-            animation: glow 2s ease-in-out infinite alternate;
-        }
+    .title {
+      color: #fff;
+      font-size: 3em;
+      margin-bottom: 50px;
+      text-shadow: 0 0 10px rgba(255,255,255,0.5);
+      animation: glow 2s ease-in-out infinite alternate;
+    }
 
-        .buttons-container {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            padding: 20px;
-        }
+    .buttons-container {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding: 20px;
+    }
 
-        .btn {
-            padding: 20px 60px;
-            font-size: 2em;
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-            position: relative;
-        }
+    .btn {
+      padding: 20px 60px;
+      font-size: 2em;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      position: relative;
+    }
 
-        #siBtn {
-            background: #2ecc71;
-            color: white;
-            transform-origin: center;
-            z-index: 1;
-        }
+    #siBtn {
+      background: #2ecc71;
+      color: white;
+      transform-origin: center;
+      /* Se eleva por encima del botón No cuando cubra la pantalla */
+      z-index: 3;
+    }
 
-        #noBtn {
-            background: #e74c3c;
-            color: white;
-            z-index: 2;
-        }
+    #noBtn {
+      background: #e74c3c;
+      color: white;
+      z-index: 2;
+    }
 
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 10px #fff;
-            }
-            to {
-                text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6;
-            }
-        }
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 10px #fff;
+      }
+      to {
+        text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6;
+      }
+    }
 
-        .firework {
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            pointer-events: none;
-        }
+    .firework {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      pointer-events: none;
+    }
 
-        @keyframes float {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(20px, -20px); opacity: 0; }
-        }
+    @keyframes float {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(20px, -20px); opacity: 0; }
+    }
 
-        #siBtn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 30px rgba(46, 204, 113, 0.5);
-        }
-    </style>
+    #siBtn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 30px rgba(46, 204, 113, 0.5);
+    }
+  </style>
 </head>
 <body>
-    <h1 class="title">¿Vas a venir hoy?</h1>
-    <div class="buttons-container">
-        <button id="siBtn" class="btn">Sí</button>
-        <button id="noBtn" class="btn">No</button>
-    </div>
+  <h1 class="title">¿Vas a venir hoy?</h1>
+  <div class="buttons-container">
+    <button id="siBtn" class="btn">Sí</button>
+    <button id="noBtn" class="btn">No</button>
+  </div>
 
-    <script>
-        const siBtn = document.getElementById('siBtn');
-        const noBtn = document.getElementById('noBtn');
-        let noAttempts = 0;
-        let baseScale = 1;
+  <script>
+    const siBtn = document.getElementById('siBtn');
+    const noBtn = document.getElementById('noBtn');
+    let noAttempts = 0;
+    let baseScale = 1;
 
-        noBtn.addEventListener('mouseover', function() {
-            const x = Math.random() * (window.innerWidth - this.offsetWidth);
-            const y = Math.random() * (window.innerHeight - this.offsetHeight);
-            this.style.position = 'absolute';
-            this.style.left = `${x}px`;
-            this.style.top = `${y}px`;
-            this.style.transform = 'scale(0.8)';
-            
-            // Incrementar el tamaño del botón Sí
-            noAttempts++;
-            baseScale = 1 + (noAttempts * 0.2); // Aumenta 20% cada vez
-            siBtn.style.transform = `scale(${baseScale})`;
-        });
+    // Al hacer click en el botón No
+    noBtn.addEventListener('click', function() {
+      // Reposicionar el botón No en una ubicación aleatoria
+      const x = Math.random() * (window.innerWidth - this.offsetWidth);
+      const y = Math.random() * (window.innerHeight - this.offsetHeight);
+      this.style.position = 'absolute';
+      this.style.left = `${x}px`;
+      this.style.top = `${y}px`;
+      
+      // Incrementar el contador de clicks y escalar el botón Sí
+      noAttempts++;
+      baseScale = 1 + (noAttempts * 0.2);  // Incrementa un 20% en cada click
+      siBtn.style.transform = `scale(${baseScale})`;
 
-        siBtn.addEventListener('click', function() {
-            this.style.background = '#9b59b6';
-            this.textContent = 'A OK 👍';
-            createFireworks();
-            noBtn.style.display = 'none';
-        });
+      // Verificar si el botón Sí abarca toda la pantalla
+      const rect = siBtn.getBoundingClientRect();
+      if (rect.width >= window.innerWidth && rect.height >= window.innerHeight) {
+        noBtn.style.display = 'none';
+      }
+    });
 
-        function createFireworks() {
-            for (let i = 0; i < 50; i++) {
-                setTimeout(() => {
-                    const firework = document.createElement('div');
-                    firework.className = 'firework';
-                    firework.style.left = Math.random() * window.innerWidth + 'px';
-                    firework.style.top = Math.random() * window.innerHeight + 'px';
-                    firework.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                    firework.style.animation = 'float 1s forwards';
-                    document.body.appendChild(firework);
-                    
-                    setTimeout(() => {
-                        firework.remove();
-                    }, 1000);
-                }, i * 100);
-            }
-        }
-    </script>
+    // Al hacer click en el botón Sí se activan los fuegos artificiales y se oculta el botón No
+    siBtn.addEventListener('click', function() {
+      this.style.background = '#9b59b6';
+      this.textContent = 'A OK 👍';
+      createFireworks();
+      noBtn.style.display = 'none';
+    });
+
+    function createFireworks() {
+      for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+          const firework = document.createElement('div');
+          firework.className = 'firework';
+          firework.style.left = Math.random() * window.innerWidth + 'px';
+          firework.style.top = Math.random() * window.innerHeight + 'px';
+          firework.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+          firework.style.animation = 'float 1s forwards';
+          document.body.appendChild(firework);
+
+          setTimeout(() => {
+            firework.remove();
+          }, 1000);
+        }, i * 100);
+      }
+    }
+  </script>
 </body>
 </html>
